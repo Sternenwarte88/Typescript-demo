@@ -2,7 +2,27 @@ import { UserFile } from '../models/userFile.model.js';
 import fs from 'fs';
 import User from '../models/user.model.js';
 class UserService {
-  private basePath = '../../userData.json';
+  private basePath = './userData.json';
+
+  constructor() {
+    this.initMethod();
+  }
+
+  private async initMethod() {
+    const fileExists = fs.existsSync(this.basePath);
+    console.log(fileExists);
+    if (!fileExists) {
+      try {
+        const initData = { users: [] };
+        const parsedData = JSON.stringify(initData, null, 2);
+        await fs.promises.writeFile(this.basePath, parsedData, 'utf8');
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          throw new Error(`Error reading file: ${error.message}`);
+        }
+      }
+    }
+  }
 
   public async getUser(id: string): Promise<User> {
     let raw: string | undefined;
@@ -31,7 +51,7 @@ class UserService {
     return user;
   }
 
-  public async getUsers(): Promise<User[]> {
+  public async getUsers(): Promise<UserFile> {
     let raw: string | undefined;
     try {
       raw = await fs.promises.readFile(this.basePath, 'utf8');
@@ -47,18 +67,25 @@ class UserService {
     if (!data) {
       throw new Error(`Users not found`);
     }
-    return data.users;
+    return data;
   }
 
   public async updateUser(userData: User): Promise<void> {
-    const users: User[] = await this.getUsers();
-    const index: number = users.findIndex((i) => i.id == userData.id);
+    const userFile: UserFile = await this.getUsers();
+
+    const userArray: User[] = userFile.users;
+    const index: number = userArray.findIndex((i) => i.id == userData.id);
     if (index === -1) {
-      throw new Error('Index not found!');
+      console.log('Index not found!');
+      return;
     }
-    users[index] = userData;
+    userArray[index].name = userData.name;
+    userArray[index].Role = userData.Role;
+    userArray[index].email = userData.email;
+    userArray[index].updatedAt = new Date();
+    userFile.users = userArray;
     try {
-      const raw: string = JSON.stringify(users);
+      const raw: string = JSON.stringify(userFile, null, 2);
       await fs.promises.writeFile(this.basePath, raw, 'utf8');
     } catch (error) {
       if (error instanceof Error) {
@@ -68,15 +95,17 @@ class UserService {
   }
 
   public async deleteUser(id: string): Promise<void> {
-    const users: User[] = await this.getUsers();
-    const index: number = users.findIndex((i) => i.id === id);
+    const userFile: UserFile = await this.getUsers();
+    const userArray: User[] = userFile.users;
+    const index: number = userArray.findIndex((i) => i.id === id);
     if (index === -1) {
       throw new Error('Index not found!');
     }
-    users.splice(index, 1);
+    userArray.splice(index, 1);
+    userFile.users = userArray;
 
     try {
-      const raw: string = JSON.stringify(users);
+      const raw: string = JSON.stringify(userFile, null, 2);
       await fs.promises.writeFile(this.basePath, raw, 'utf8');
     } catch (error) {
       if (error instanceof Error) {
@@ -86,11 +115,12 @@ class UserService {
   }
 
   public async createUser(user: User): Promise<void> {
-    const users: User[] = await this.getUsers();
-    users.push(user);
-
+    const userFile: UserFile = await this.getUsers();
+    const userArray: User[] = userFile.users;
+    userArray.push(user);
+    userFile.users = userArray;
     try {
-      const raw: string = JSON.stringify(users);
+      const raw: string = JSON.stringify(userFile, null, 2);
       await fs.promises.writeFile(this.basePath, raw, 'utf8');
     } catch (error) {
       if (error instanceof Error) {

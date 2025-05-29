@@ -15,7 +15,7 @@ class UserRouter {
     this.router.get('/', this.getAllUsers);
     this.router.post('/', this.createUser);
     this.router.patch('/', this.updateUser);
-    this.router.delete('/:id', this.deleteUser);
+    this.router.delete('/', this.deleteUser);
   }
   @AutoBind
   private getUser(_req: Request, res: Response): void {

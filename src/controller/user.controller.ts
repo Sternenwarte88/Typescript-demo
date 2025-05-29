@@ -25,12 +25,17 @@ class UserController {
 
   public async UpdateUser(req: Request, res: Response): Promise<void> {
     const userData: User = req.body;
+    userData.updatedAt = new Date();
     await UserService.updateUser(userData);
     res.status(200).send({ msg: 'ok' });
   }
 
   public async DeleteUser(req: Request, res: Response): Promise<void> {
-    const id = req.params.id;
+    const id = req.query.id;
+    if (typeof id !== 'string') {
+      res.status(400).json({ error: 'Query parameter "id" is required and must be a string' });
+      return;
+    }
     await UserService.deleteUser(id);
     res.status(200).send({ msg: 'ok' });
   }
@@ -38,6 +43,8 @@ class UserController {
   public async CreateUser(req: Request, res: Response): Promise<void> {
     let user = req.body as User;
     user.id = uuid();
+    user.createdAt = new Date();
+    user.updatedAt = user.createdAt;
     await UserService.createUser(user);
     res.status(201).send({ msg: 'ok' });
   }
