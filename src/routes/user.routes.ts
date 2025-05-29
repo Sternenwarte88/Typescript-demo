@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import userController from '../controller/user.controller.js';
 import { AutoBind } from '../decorators/default.decorator.js';
 
 class UserRouter {
@@ -9,39 +10,39 @@ class UserRouter {
     this.initRoutes();
   }
 
-  private initRoutes() {
+  private initRoutes(): void {
     this.router.get('/:id', this.getUser);
     this.router.get('/', this.getAllUsers);
     this.router.post('/', this.createUser);
-    this.router.patch('/:id', this.updateUser);
+    this.router.patch('/', this.updateUser);
     this.router.delete('/:id', this.deleteUser);
   }
   @AutoBind
-  private getUser(_req: Request, res: Response) {
-    res.status(200).json({ message: 'User route is working!' });
+  private getUser(_req: Request, res: Response): void {
+    userController.GetUser(_req, res);
   }
 
   @AutoBind
-  private getAllUsers(_req: Request, res: Response) {
-    res.status(200).json({ message: 'All users route is working!' });
+  private getAllUsers(_req: Request, res: Response): void {
+    userController.GetUsers(_req, res);
   }
 
   @AutoBind
-  private createUser(_req: Request, res: Response) {
-    res.status(201).json({ message: 'User created successfully!' });
+  private createUser(_req: Request, res: Response): void {
+    userController.CreateUser(_req, res);
   }
 
   @AutoBind
-  private updateUser(_req: Request, res: Response) {
-    res.status(200).json({ message: 'User updated successfully!' });
+  private updateUser(_req: Request, res: Response): void {
+    userController.UpdateUser(_req, res);
   }
 
   @AutoBind
-  private deleteUser(_req: Request, res: Response) {
-    res.status(200).json({ message: 'User deleted successfully!' });
+  private deleteUser(_req: Request, res: Response): void {
+    userController.DeleteUser(_req, res);
   }
 
-  public getRouter() {
+  public getRouter(): Router {
     return this.router;
   }
 }
