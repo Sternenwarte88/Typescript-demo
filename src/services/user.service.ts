@@ -14,12 +14,13 @@ class UserService {
         const fileExists = fs.existsSync(this.basePath);
 
         if (!fileExists) {
-            const initData: { users: User[] } = { users: [] }; 
+            const initData: { users: User[] } = { users: [] };
             const parsedData = JSON.stringify(initData, null, 2);
 
             await fileProcessor.writeFile(parsedData, this.basePath);
         }
     }
+
     public async getUser(id: string): Promise<User> {
         const raw: string = await fileProcessor.getCompleteData(this.basePath);
         const data = JSON.parse(raw, (key, value) =>

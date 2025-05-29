@@ -1,9 +1,10 @@
 import fs from 'fs';
 import { UserFile } from '../models/userFile.model.js';
+import { CourseFile } from '../models/courseFile.model.js';
 
 class FileProcessor {
     public async writeFile(
-        data: UserFile | string,
+        data: UserFile | CourseFile | string,
         path: string,
     ): Promise<void> {
         try {

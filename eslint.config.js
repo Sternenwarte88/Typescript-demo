@@ -17,7 +17,7 @@ export default [
         },
         rules: {
             // Warnung bei ungenutzten Variablen
-            '@typescript-eslint/no-unused-vars': 'warn',
+            '@typescript-eslint/no-unused-vars': 'off',
              'no-console': 'warn', 
 
             // Leerzeilen-Regeln
