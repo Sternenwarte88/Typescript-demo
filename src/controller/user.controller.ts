@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import UserService from '../services/user.service.js';
-import User from '../models/user.model.js';
+import IUser from '../models/user.model.js';
 import { v4 as uuid } from 'uuid';
 
 class UserController {
@@ -30,9 +30,9 @@ class UserController {
     }
 
     public async UpdateUser(req: Request, res: Response): Promise<void> {
-        const userData: User = req.body;
+        const userData: IUser = req.body;
 
-        userData.updatedAt = new Date();
+        userData.updateAt = new Date();
         await UserService.updateUser(userData);
         res.status(200).send({ msg: 'ok' });
     }
@@ -53,11 +53,11 @@ class UserController {
     }
 
     public async CreateUser(req: Request, res: Response): Promise<void> {
-        let user = req.body as User;
+        let user = req.body as IUser;
 
         user.id = uuid();
         user.createdAt = new Date();
-        user.updatedAt = user.createdAt;
+        user.updateAt = user.createdAt;
         await UserService.createUser(user);
         res.status(201).send({ msg: 'ok' });
     }

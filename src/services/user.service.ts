@@ -1,6 +1,6 @@
 import { UserFile } from '../models/userFile.model.js';
 import fs from 'fs';
-import User from '../models/user.model.js';
+import IUser from '../models/user.model.js';
 import fileProcessor from '../utils/fileProcessor.js';
 
 class UserService {
@@ -14,21 +14,21 @@ class UserService {
         const fileExists = fs.existsSync(this.basePath);
 
         if (!fileExists) {
-            const initData: { users: User[] } = { users: [] };
+            const initData: { users: IUser[] } = { users: [] };
             const parsedData = JSON.stringify(initData, null, 2);
 
             await fileProcessor.writeFile(parsedData, this.basePath);
         }
     }
 
-    public async getUser(id: string): Promise<User> {
+    public async getUser(id: string): Promise<IUser> {
         const raw: string = await fileProcessor.getCompleteData(this.basePath);
         const data = JSON.parse(raw, (key, value) =>
             key === 'createdAt' || key === 'updatedAt'
                 ? new Date(value)
                 : value,
         ) as UserFile;
-        const user: User | undefined = data.users.find(
+        const user: IUser | undefined = data.users.find(
             (user: { id: string }) => user.id === id,
         );
 
@@ -51,9 +51,9 @@ class UserService {
         return data;
     }
 
-    public async updateUser(userData: User): Promise<void> {
+    public async updateUser(userData: IUser): Promise<void> {
         const userFile: UserFile = await this.getUsers();
-        const userArray: User[] = userFile.users;
+        const userArray: IUser[] = userFile.users;
         const index: number = userArray.findIndex((i) => i.id == userData.id);
 
         if (index === -1) {
@@ -71,7 +71,7 @@ class UserService {
 
     public async deleteUser(id: string): Promise<void> {
         const userFile: UserFile = await this.getUsers();
-        const userArray: User[] = userFile.users;
+        const userArray: IUser[] = userFile.users;
         const index: number = userArray.findIndex((i) => i.id === id);
 
         if (index === -1) {
@@ -84,9 +84,9 @@ class UserService {
         fileProcessor.writeFile(userFile, this.basePath);
     }
 
-    public async createUser(user: User): Promise<void> {
+    public async createUser(user: IUser): Promise<void> {
         const userFile: UserFile = await this.getUsers();
-        const userArray: User[] = userFile.users;
+        const userArray: IUser[] = userFile.users;
 
         userArray.push(user);
         userFile.users = userArray;

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { Course } from '../models/course.model.js';
+import { ICourse } from '../models/course.model.js';
 import fileProcessor from '../utils/fileProcessor.js';
 import { CourseFile } from '../models/courseFile.model.js';
 import { v4 as uuid } from 'uuid';
@@ -14,7 +14,7 @@ class CourseService {
         const fileExists = fs.existsSync(this.basePath);
 
         if (!fileExists) {
-            const wrapper: { courses: Course[] } = { courses: [] };
+            const wrapper: { courses: ICourse[] } = { courses: [] };
             const serializedWrapper = JSON.stringify(wrapper, null, 2);
 
             await fileProcessor.writeFile(serializedWrapper, this.basePath);
@@ -33,10 +33,10 @@ class CourseService {
         return data;
     }
 
-    public async getCourse(id: string): Promise<Course> {
+    public async getCourse(id: string): Promise<ICourse> {
         const data = await this.getAllCourses();
-        const courses: Course[] = data.courses;
-        const course: Course | undefined = courses.find((c) => c.id === id);
+        const courses: ICourse[] = data.courses;
+        const course: ICourse | undefined = courses.find((c) => c.id === id);
 
         if (course === undefined) {
             throw new Error('course is undefined');
@@ -45,19 +45,19 @@ class CourseService {
         return course;
     }
 
-    public async createCourse(course: Course): Promise<void> {
+    public async createCourse(course: ICourse): Promise<void> {
         const courseFile = await this.getAllCourses();
         const courses = courseFile.courses;
 
         course.id = uuid();
         course.createdAt = new Date();
-        course.lastUpdate = course.createdAt;
+        course.updateAt = course.createdAt;
         courses.push(course);
         courseFile.courses = courses;
         await fileProcessor.writeFile(courseFile, this.basePath);
     }
 
-    public async updateCourse(course: Course): Promise<CourseFile> {
+    public async updateCourse(course: ICourse): Promise<CourseFile> {
         const courseFile = await this.getAllCourses();
         const courses = courseFile.courses;
         const courseIndex: number = courses.findIndex(
@@ -73,7 +73,7 @@ class CourseService {
         courses[courseIndex].name = course.name;
         courses[courseIndex].price = course.price;
         courses[courseIndex].tags = course.tags;
-        courses[courseIndex].lastUpdate = new Date();
+        courses[courseIndex].updateAt = new Date();
 
         courseFile.courses = courses;
 

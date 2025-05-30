@@ -1,33 +1,38 @@
-# 📘 CourseManager API – TypeScript Demo Projekt
+# 📘 CourseManager API – TypeScript Showcase-Projekt
 
-Willkommen zur **CourseManager API**, einem Lern-Backend-Projekt zur Verwaltung von Online-Kursen
-und Teilnehmern – umgesetzt mit **Express.js** und **TypeScript**.  
-Ziel ist es, moderne Konzepte wie Klassen, Interfaces, eigene Decorators und zentrale
-Fehlerbehandlung realistisch anzuwenden.
+Willkommen zur **CourseManager API**, einem strukturierten Backend-Projekt zur Verwaltung von Online-Kursen und Teilnehmern – entwickelt mit **Express.js** und **TypeScript**.
+
+Dieses Projekt dient als **technisches Showcase**, um relevante TypeScript-Fähigkeiten zu demonstrieren:  
+🔹 saubere Architektur,  
+🔹 klare Trennung von Verantwortlichkeiten,  
+🔹 häufig genutzte Sprachfeatures,  
+🔹 realistische REST-Schnittstellen – **ohne Framework-Magic oder externe Validatoren**.
 
 ---
 
-## 🎯 Features (MVP)
+## 🎯 Features – Demonstrierte Kompetenzen
 
-- 📚 Verwaltung von Kursen (`/courses`)
-- 👤 Verwaltung von Nutzern (`/users`)
-- 📝 Einschreibung von Nutzern in Kurse (`/enroll`)
-- ✅ Validierung von Eingaben (z. B. Email, leere Felder)
-- 🧠 TypeScript mit Klassen, Interfaces, Generics & Decorators
-- 📦 Modularer Aufbau (Models, Services, Controller)
-- 🛠 Fehlerhandling via Middleware
+- 📚 **Kurs-Management** via REST-API (`/courses`)
+- 👤 **Nutzerverwaltung** (`/users`)
+- 🧱 **OOP**: Klassen, einfache Servicelogik, Typsicherheit
+- 🧠 **TypeScript Features**:
+  - Type Aliases für Datenmodelle
+  - Primitive manuelle Validierung
+  - Saubere Trennung von Routing, Logik & Typen
+- 📦 **Modularer Aufbau** (Controller, Services, Routes, Types)
+- 🗂️ JSON-Dateien als einfacher Persistenz-Ersatz
 
 ---
 
 ## 🚀 Getting Started
 
-### 🔧 Voraussetzungen
+### Voraussetzungen
 
 - Node.js 18+
 - npm oder yarn
-- Git + SSH-Zugriff
+- Git
 
-### 🛠 Installation
+### Installation
 
 ```bash
 git clone git@github-alt:Sternenwarte88/Typescript-demo.git
@@ -35,92 +40,97 @@ cd Typescript-demo
 npm install
 ```
 
-### ⚙️ Build & Start
+### Scripts
+
+| Befehl          | Beschreibung                                 |
+|------------------|----------------------------------------------|
+| `npm run dev`     | Starte das Projekt im Watch-Modus mit `ts-node-dev` |
+| `npm run build`   | Transpiliere TypeScript in `/dist`           |
+| `npm start`       | Starte die App aus dem `/dist`-Verzeichnis   |
 
 ```bash
-npm run build   # Transpiliert TypeScript
-npm start       # Startet die App (dist/index.js)
-```
-
-Alternativ für die Entwicklung:
-
-```bash
-npm run dev     # Start über ts-node-dev
+npm run dev      # Entwicklung
+npm run build    # Build
+npm start        # Produktion (dist/index.js)
 ```
 
 ---
 
 ## 🔁 Beispiel-Requests (curl/Postman)
 
-### 👤 Neuen User anlegen
+### 👤 User anlegen
 
 ```bash
 curl -X POST http://localhost:3000/users \
   -H "Content-Type: application/json" \
-  -d '{"name": "Anna", "email": "anna@example.com"}'
+  -d '{"name": "Anna", "email": "anna@example.com", "role": "student"}'
 ```
 
-### 📚 Neuen Kurs anlegen
+➡️ `role` kann `"admin"`, `"instructor"` oder `"student"` sein
+
+---
+
+### 📚 Kurs anlegen
 
 ```bash
 curl -X POST http://localhost:3000/courses \
   -H "Content-Type: application/json" \
-  -d '{"title": "TypeScript Basics", "description": "Grundlagenkurs", "maxParticipants": 10}'
+  -d '{
+    "name": "TypeScript Basics",
+    "description": "Grundlagenkurs für Einsteiger",
+    "price": 99.99,
+    "tags": ["typescript", "beginner"],
+    "author": "Max Mustermann"
+  }'
 ```
 
-### 📝 User einschreiben
-
-```bash
-curl -X POST http://localhost:3000/enroll \
-  -H "Content-Type: application/json" \
-  -d '{"userId": "1", "courseId": "2"}'
-```
+➡️ `price` muss eine Zahl sein, `tags` ist ein Array von Strings
 
 ---
 
 ## 🧱 Projektstruktur
 
-```bash
+```plaintext
 src/
-├── controllers/    # Request-Handling
-├── decorators/     # Custom Decorators (@Required, @Default)
-├── middlewares/    # Fehlerhandling
-├── models/         # Datenmodelle & abstrakte Basis
-├── routes/         # Express-Router
-├── services/       # Geschäftslogik
-├── types/          # Interfaces & Typen
-├── utils/          # Validierung etc.
-└── index.ts        # Einstiegspunkt
+├── controllers/      # REST-Request-Logik
+├── models/           # Datenmodelle (z. B. User, Course)
+├── routes/           # Express-Router
+├── services/         # Geschäftslogik
+├── types/            # Typdefinitionen
+├── utils/            # Helferfunktionen (z. B. ID-Generator)
+└── index.ts          # Einstiegspunkt
 ```
 
 ---
 
 ## ⚙️ Technologien & Konzepte
 
-| Thema                | Verwendung im Projekt                          |
-| -------------------- | ---------------------------------------------- |
-| **TypeScript**       | Klassen, Interfaces, Generics, Utility Types   |
-| **Express.js**       | HTTP API                                       |
-| **reflect-metadata** | Custom Decorators für Required & Default       |
-| **Zod / Eigenbau**   | Eingabevalidierung                             |
-| **Modularisierung**  | Trennung von Routes, Services, Controller etc. |
-| **Fehlerhandling**   | Zentrale Middleware für Exceptions             |
+| Thema                    | Umsetzung im Projekt                                   |
+|--------------------------|--------------------------------------------------------|
+| **TypeScript**           | Type Aliases, Strukturierung, Typisierung              |
+| **Express.js**           | Routing & REST-API                                     |
+| **Manuelle Validierung** | Basisprüfungen ohne externe Libraries                  |
+| **Modularisierung**      | Trennung von Logik, Typen und Struktur                 |
+| **Dateibasierte Speicherung** | JSON-Dateien als Ersatz für Datenbank       |
 
 ---
 
-## 🧪 Hintergrund & Ziel
+## 💼 Ziel & Einsatz als Showcase
 
-Dieses Projekt ist **im Eigenstudium entstanden** und baut auf dem Abschluss des Udemy-Kurses  
-**„Understanding TypeScript – 2024 Edition“** von Maximilian Schwarzmüller auf.
+Die CourseManager API wurde im Rahmen eines Eigenprojekts entwickelt, um **relevante TypeScript-Fähigkeiten im Backend-Kontext** zu demonstrieren.
 
-🎓 Ziel war es, die dort vermittelten Konzepte wie:
+Ziel war es, einen klar strukturierten API-Server aufzubauen, der:
 
-- Klassen & Interfaces
-- Generics & Utility Types
-- Decorators mit reflect-metadata
-- Modularisierung & saubere Architektur
+- realistische REST-Schnittstellen bietet
+- saubere Code-Trennung verfolgt
+- TypeScript typisch und verständlich einsetzt
+- ohne Framework-Ballast funktioniert
 
-...nicht nur theoretisch zu verstehen, sondern **praxisnah in einem eigenständigen Backend-Projekt
-umzusetzen**.
+Das Projekt kann als **Portfolio-Beitrag in Bewerbungen** genutzt werden.
 
-So dient die CourseManager API als Proof-of-Concept und Demonstration der erworbenen Fähigkeiten.
+---
+
+## 👤 Kontakt
+
+Projekt & Umsetzung: [Stefan aka Sternenwarte88](https://github.com/Sternenwarte88)  
+Fragen oder Feedback? Gerne per Issue oder Mail!

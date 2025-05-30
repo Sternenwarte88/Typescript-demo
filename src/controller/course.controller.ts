@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import courseService from '../services/course.service.js';
-import { Course } from '../models/course.model.js';
+import { ICourse } from '../models/course.model.js';
 import { v4 as uuid } from 'uuid';
 
 class CourseController {
@@ -20,10 +20,10 @@ class CourseController {
     }
 
     public async createCourse(req: Request, res: Response) {
-        let course = req.body as Course;
+        let course = req.body as ICourse;
 
         course.createdAt = new Date();
-        course.lastUpdate = course.createdAt;
+        course.updateAt = course.createdAt;
         course.id = uuid();
 
         await courseService.createCourse(course);
@@ -39,7 +39,7 @@ class CourseController {
     }
 
     public async updateCourse(req: Request, res: Response) {
-        const course: Course = req.body as Course;
+        const course: ICourse = req.body as ICourse;
 
         const result = await courseService.updateCourse(course);
 

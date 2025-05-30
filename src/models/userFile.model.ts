@@ -1,5 +1,5 @@
-import User from './user.model.js';
+import IUser from './user.model.js';
 
 export type UserFile = {
-    users: User[];
+    users: IUser[];
 };

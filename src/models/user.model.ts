@@ -1,11 +1,9 @@
-import {Role} from '../types/role.js';
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: Date;
-  updatedAt: Date;
-  Role: Role;
-};
+import { Role } from '../types/role.js';
+import { IBaseModel } from './base.model.js';
 
-export default User;
+export interface IUser extends IBaseModel {
+    email: string;
+    Role: Role;
+}
+
+export default IUser;

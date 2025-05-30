@@ -1,5 +1,5 @@
-import { Course } from './course.model.js';
+import { ICourse } from './course.model.js';
 
 export type CourseFile = {
-    courses: Course[];
+    courses: ICourse[];
 };
