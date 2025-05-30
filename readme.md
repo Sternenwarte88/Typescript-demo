@@ -132,5 +132,5 @@ Das Projekt kann als **Portfolio-Beitrag in Bewerbungen** genutzt werden.
 
 ## 👤 Kontakt
 
-Projekt & Umsetzung: [Stefan aka Sternenwarte88](https://github.com/Sternenwarte88)  
+Projekt & Umsetzung: [Stephan aka Sternenwarte88](https://github.com/Sternenwarte88)  
 Fragen oder Feedback? Gerne per Issue oder Mail!
