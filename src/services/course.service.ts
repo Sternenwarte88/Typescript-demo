@@ -57,7 +57,7 @@ class CourseService {
         await fileProcessor.writeFile(courseFile, this.basePath);
     }
 
-    public async updateCourse(course: Course) {
+    public async updateCourse(course: Course): Promise<CourseFile> {
         const courseFile = await this.getAllCourses();
         const courses = courseFile.courses;
         const courseIndex: number = courses.findIndex(
@@ -78,6 +78,8 @@ class CourseService {
         courseFile.courses = courses;
 
         await fileProcessor.writeFile(courseFile, this.basePath);
+
+        return courseFile;
     }
     public async deleteCourse(id: string) {
         const courseFile = await this.getAllCourses();
