@@ -1,6 +1,6 @@
-import { UserFile } from '../models/userFile.model.js';
 import fs from 'fs';
 import IUser from '../models/user.model.js';
+import { UserFile } from '../models/userFile.model.js';
 import fileProcessor from '../utils/fileProcessor.js';
 
 class UserService {
@@ -63,7 +63,7 @@ class UserService {
         userArray[index].name = userData.name;
         userArray[index].Role = userData.Role;
         userArray[index].email = userData.email;
-        userArray[index].updatedAt = new Date();
+        userArray[index].updateAt = new Date();
         userFile.users = userArray;
 
         await fileProcessor.writeFile(userFile, this.basePath);
