@@ -1,8 +1,8 @@
 import fs from 'fs';
-import { ICourse } from '../models/course.model.js';
-import fileProcessor from '../utils/fileProcessor.js';
-import { CourseFile } from '../models/courseFile.model.js';
 import { v4 as uuid } from 'uuid';
+import { ICourse } from '../models/course.model.js';
+import { CourseFile } from '../models/courseFile.model.js';
+import fileProcessor from '../utils/fileProcessor.js';
 
 class CourseService {
     private basePath: string = './courseData.json';
@@ -96,4 +96,6 @@ class CourseService {
     }
 }
 
-export default new CourseService();
+export const courseService = new CourseService();
+// For testing
+export { CourseService };
