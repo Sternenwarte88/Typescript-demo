@@ -20,6 +20,10 @@ vi.mock('../../src/utils/fileProcessor.js', () => {
     };
 });
 
+beforeEach(() => {
+    vi.clearAllMocks();
+});
+
 const courseFakeData: CourseFile = {
     courses: [
         {
@@ -36,11 +40,6 @@ const courseFakeData: CourseFile = {
 };
 
 describe('CourseService init', () => {
-    beforeEach(() => {
-        // Clear all mockhistories before each test
-        vi.clearAllMocks();
-    });
-
     test('File should be already exist', async () => {
         (fs.existsSync as any).mockReturnValue(true);
 
@@ -84,9 +83,6 @@ describe('CourseService init', () => {
 
 
   describe('Get all courses', () => {
-      beforeEach(() => {
-          vi.clearAllMocks();
-      });
 
       test('When data would be avaiable', async () => {
           (fileProcessor.getCompleteData as any).mockReturnValue(
@@ -108,3 +104,29 @@ describe('CourseService init', () => {
           await expect(courseService.getAllCourses()).rejects.toThrowError(`Course not found`)
       });
   });
+
+
+  describe("Get Course",() => {
+
+    test("Find Course", async () => {
+        (fileProcessor.getCompleteData as any).mockReturnValue(
+          courseFakeData,
+        );
+          
+        const courseService = new CourseService();
+
+        expect(await courseService.getCourse("123")).toEqual(courseFakeData.courses[0])
+
+    } )
+
+    test("Can´t Find Course", async () => {
+        (fileProcessor.getCompleteData as any).mockReturnValue(
+          courseFakeData,
+        );
+          
+        const courseService = new CourseService();
+
+        await expect(courseService.getCourse("23")).rejects.toThrowError('course is undefined')
+
+    } )
+  })
