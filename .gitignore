@@ -10,3 +10,4 @@
 /.env.production
 /.cache
 userData.json
+/coverage
