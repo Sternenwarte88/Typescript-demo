@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { ICourse } from '../../src/models/course.model.js';
+import { CourseFile } from '../../src/models/courseFile.model.js';
 import { CourseService } from '../../src/services/course.service';
 import fileProcessor from '../../src/utils/fileProcessor.js';
 
@@ -18,6 +19,21 @@ vi.mock('../../src/utils/fileProcessor.js', () => {
         },
     };
 });
+
+const courseFakeData: CourseFile = {
+    courses: [
+        {
+            id: '123',
+            name: 'fakeCourse',
+            createdAt: new Date(),
+            updateAt: new Date(),
+            description: 'fakeData',
+            price: 0,
+            tags: ['fake', 'data'],
+            author: 'faker',
+        },
+    ],
+};
 
 describe('CourseService init', () => {
     beforeEach(() => {
@@ -64,3 +80,31 @@ describe('CourseService init', () => {
         expect(parsedData).toEqual(fakeCourseData);
     });
 });
+
+
+
+  describe('Get all courses', () => {
+      beforeEach(() => {
+          vi.clearAllMocks();
+      });
+
+      test('When data would be avaiable', async () => {
+          (fileProcessor.getCompleteData as any).mockReturnValue(
+              courseFakeData,
+          );
+
+          const courseService = new CourseService();
+
+          expect(await courseService.getAllCourses()).toEqual(courseFakeData);
+      });
+
+      test('When data would be not avaiable', async () => {
+          (fileProcessor.getCompleteData as any).mockReturnValue(
+              null,
+          );
+
+          const courseService = new CourseService();
+
+          await expect(courseService.getAllCourses()).rejects.toThrowError(`Course not found`)
+      });
+  });
