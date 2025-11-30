@@ -9,7 +9,7 @@ vi.mock('fs', () => ({
     },
 }));
 
-vi.mock('../../src/utils/fileProcessor.ts', () => ({
+vi.mock('../../src/utils/fileProcessor', () => ({
     default: {
         writeFile: vi.fn(),
         getCompleteData: vi.fn(),
@@ -21,7 +21,7 @@ const mockedFileProcessor = vi.mocked(fileProcessor, true);
 
 beforeEach(() => {
     vi.resetAllMocks();
-    mockedFS.existsSync.mockResolvedValue(true);
+    mockedFS.existsSync.mockReturnValue(true);
 });
 
 describe('Init userService', () => {
@@ -32,9 +32,7 @@ describe('Init userService', () => {
 
         expect(mockedFileProcessor.writeFile).toBeCalled();
     });
-    test("File is avaible", () => {
-        
-
+    test('File is avaible', () => {
         const userService = new UserService();
 
         expect(mockedFileProcessor.writeFile).not.toBeCalled();
