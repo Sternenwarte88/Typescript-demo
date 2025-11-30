@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import fileProcessor from '../../src/utils/fileProcessor';
+import { UserService } from './../../src/services/user.service';
 
 vi.mock('fs', () => ({
     default: {
@@ -8,7 +9,7 @@ vi.mock('fs', () => ({
     },
 }));
 
-vi.mock('fileProzessor', () => ({
+vi.mock('../../src/utils/fileProcessor.ts', () => ({
     default: {
         writeFile: vi.fn(),
         getCompleteData: vi.fn(),
@@ -21,4 +22,21 @@ const mockedFileProcessor = vi.mocked(fileProcessor, true);
 beforeEach(() => {
     vi.resetAllMocks();
     mockedFS.existsSync.mockResolvedValue(true);
+});
+
+describe('Init userService', () => {
+    test("File isn't avaible", () => {
+        mockedFS.existsSync.mockReturnValue(false);
+
+        const userService = new UserService();
+
+        expect(mockedFileProcessor.writeFile).toBeCalled();
+    });
+    test("File is avaible", () => {
+        
+
+        const userService = new UserService();
+
+        expect(mockedFileProcessor.writeFile).not.toBeCalled();
+    });
 });
