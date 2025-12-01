@@ -39,7 +39,7 @@ function createFakeData(): IUser {
 }
 
 describe('Init userService', () => {
-    test("File isn't avaible", () => {
+    test("File isn't aviable", () => {
         mockedFS.existsSync.mockReturnValue(false);
 
         const userService = new UserService();
@@ -89,12 +89,15 @@ describe('Get User', () => {
 describe('Get Users', () => {
     test('On successfully getting Users', async () => {
         const fakeData = createFakeData();
+        const fakeUserFile: UserFile = {
+            users: [fakeData],
+        };
 
-        mockedFileProcessor.getCompleteData.mockResolvedValue(fakeData);
+        mockedFileProcessor.getCompleteData.mockResolvedValue(fakeUserFile);
 
         const userService = new UserService();
 
-        await expect(userService.getUsers()).resolves.toEqual(fakeData);
+        await expect(userService.getUsers()).resolves.toEqual(fakeUserFile);
     });
 
     test('On failing getting Users', async () => {
@@ -103,5 +106,50 @@ describe('Get Users', () => {
         const userService = new UserService();
 
         await expect(userService.getUsers()).rejects.toThrow(`Users not found`);
+    });
+});
+
+describe('Update User', () => {
+    test('Updating User with wrong data. ID not matching', async () => {
+        const fakeData = createFakeData();
+        const fakeUserFile: UserFile = {
+            users: [fakeData],
+        };
+
+        mockedFileProcessor.getCompleteData.mockResolvedValue(fakeUserFile);
+
+        const userService = new UserService();
+
+        const wrongUser: IUser = { ...fakeData };
+
+        wrongUser.id = '234';
+
+        await expect(userService.updateUser(wrongUser)).rejects.toThrowError(
+            'User not found',
+        );
+    });
+
+    test('Updateing course with correct data.', async () => {
+        const fakeData = createFakeData();
+        const fakeUserFile: UserFile = {
+            users: [fakeData],
+        };
+
+        mockedFileProcessor.getCompleteData.mockResolvedValue(fakeUserFile);
+
+        const userService = new UserService();
+
+        const newUser: IUser = { ...fakeData };
+
+        newUser.email = 'test@test2.de';
+        await userService.updateUser(newUser);
+
+        const [dataArg] = mockedFileProcessor.writeFile.mock.calls[0] as [
+            UserFile,
+            string,
+        ];
+
+        expect(dataArg.users[0].email).toBe('test@test2.de');
+        expect(mockedFileProcessor.writeFile).toBeCalledTimes(1);
     });
 });

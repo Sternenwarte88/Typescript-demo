@@ -61,7 +61,7 @@ class UserService {
         const index: number = userArray.findIndex((i) => i.id == userData.id);
 
         if (index === -1) {
-            return;
+            throw new Error('User not found');
         }
 
         userArray[index].name = userData.name;
