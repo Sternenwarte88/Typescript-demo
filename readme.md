@@ -22,6 +22,7 @@ This repository serves as a **technical showcase** to demonstrate relevant TypeS
   - Separation of routing, logic, and type definitions  
 - 📦 **Modular project structure**
 - 🗂️ JSON-based storage for simple persistence
+- 🧪 **Unit tests** for core logic (services, validation, and edge cases)
 
 ---
 
@@ -48,11 +49,13 @@ npm install
 | `npm run dev`   | Start development mode using `ts-node-dev`       |
 | `npm run build` | Transpile TypeScript into `/dist`                |
 | `npm start`     | Run the production server from `dist/index.js`   |
+| `npm test`      | Run the unit test suite                          |
 
 ```bash
 npm run dev
 npm run build
 npm start
+npm test
 ```
 
 ---
@@ -114,6 +117,7 @@ src/
 | **Manual validation**    | Basic checks without external validation libraries |
 | **Modularization**       | Separation of logic, routes, and type definitions  |
 | **File-based storage**   | JSON files as a simple database alternative        |
+| **Unit testing**         | Automated tests for core business logic            |
 
 ---
 
@@ -127,6 +131,7 @@ Goals of this project:
 - Showcase clean, maintainable architecture patterns  
 - Use TypeScript in a transparent, beginner-friendly way  
 - Avoid framework complexity to focus on fundamentals  
+- Demonstrate basic **unit testing** and test-driven thinking
 
 This repository can be used as a **portfolio project in job applications**.
 
