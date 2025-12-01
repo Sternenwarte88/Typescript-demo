@@ -185,33 +185,34 @@ describe('Delete User', () => {
         expect(mockedFileProcessor.writeFile).toBeCalled();
     });
 });
+describe('Creating user', () => {
+    test('Creating user, correct Data', async () => {
+        const fakeData = createFakeData();
+        const fakeUserData: UserFile = { users: [fakeData] };
 
-test('Creating user, correct Data', async () => {
-    const fakeData = createFakeData();
-    const fakeUserData: UserFile = { users: [fakeData] };
+        mockedFileProcessor.getCompleteData.mockResolvedValue(fakeUserData);
 
-    mockedFileProcessor.getCompleteData.mockResolvedValue(fakeUserData);
+        const newFakeData: IUser = {
+            id: '',
+            name: 'fakeUser2',
+            createdAt: new Date(),
+            updateAt: new Date(),
+            email: 'test2@test2.de',
+            Role: Role.Guest,
+        };
 
-    const newFakeData: IUser = {
-        id: '',
-        name: 'fakeUser2',
-        createdAt: new Date(),
-        updateAt: new Date(),
-        email: 'test2@test2.de',
-        Role: Role.Guest,
-    };
+        const userService = new UserService();
 
-    const userService = new UserService();
+        await userService.createUser(newFakeData);
 
-    await userService.createUser(newFakeData);
+        const [dataArg] = mockedFileProcessor.writeFile.mock.calls[0] as [
+            UserFile,
+            string,
+        ];
+        const val = dataArg.users[0];
 
-    const [dataArg] = mockedFileProcessor.writeFile.mock.calls[0] as [
-        UserFile,
-        string,
-    ];
-    const val = dataArg.users[0];
-
-    expect(typeof val.id).toBe('string');
-    expect(val.createdAt).toBeInstanceOf(Date);
-    expect(Object.values(Role)).toContain(val.Role);
+        expect(typeof val.id).toBe('string');
+        expect(val.createdAt).toBeInstanceOf(Date);
+        expect(Object.values(Role)).toContain(val.Role);
+    });
 });
