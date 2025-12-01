@@ -153,3 +153,35 @@ describe('Update User', () => {
         expect(mockedFileProcessor.writeFile).toBeCalledTimes(1);
     });
 });
+
+describe('Delete User', () => {
+    test('failing to delete the user', async () => {
+        const fakeData = createFakeData();
+        const fakeUserFile: UserFile = {
+            users: [fakeData],
+        };
+
+        mockedFileProcessor.getCompleteData.mockResolvedValue(fakeUserFile);
+
+        const userService = new UserService();
+
+        await expect(userService.deleteUser('223')).rejects.toThrowError(
+            'Index not found!',
+        );
+    });
+
+    test('successfully delete User', async () => {
+        const fakeData = createFakeData();
+        const fakeUserFile: UserFile = {
+            users: [fakeData],
+        };
+
+        mockedFileProcessor.getCompleteData.mockResolvedValue(fakeUserFile);
+
+        const userService = new UserService();
+
+        await userService.deleteUser(fakeData.id);
+
+        expect(mockedFileProcessor.writeFile).toBeCalled();
+    });
+});
