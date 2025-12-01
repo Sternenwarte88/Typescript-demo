@@ -129,7 +129,7 @@ describe('Update User', () => {
         );
     });
 
-    test('Updateing course with correct data.', async () => {
+    test('Updateing user with correct data.', async () => {
         const fakeData = createFakeData();
         const fakeUserFile: UserFile = {
             users: [fakeData],
