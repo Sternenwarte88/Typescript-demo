@@ -1,10 +1,10 @@
 import fs from 'fs';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import IUser from '../../src/models/user.model';
-import { UserFile } from '../../src/models/userFile.model';
-import { Role } from '../../src/types/role';
-import fileProcessor from '../../src/utils/fileProcessor';
-import { UserService } from './../../src/services/user.service';
+import IUser from '../../../src/models/user.model';
+import { UserFile } from '../../../src/models/userFile.model';
+import { UserService } from '../../../src/services/user.service';
+import { Role } from '../../../src/types/role';
+import fileProcessor from '../../../src/utils/fileProcessor';
 
 vi.mock('fs', () => ({
     default: {
@@ -12,7 +12,7 @@ vi.mock('fs', () => ({
     },
 }));
 
-vi.mock('../../src/utils/fileProcessor', () => ({
+vi.mock('../../../src/utils/fileProcessor', () => ({
     default: {
         writeFile: vi.fn(),
         getCompleteData: vi.fn(),

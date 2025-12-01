@@ -1,9 +1,9 @@
 import fs from 'fs';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { ICourse } from '../../src/models/course.model.js';
-import { CourseFile } from '../../src/models/courseFile.model.js';
-import { CourseService } from '../../src/services/course.service';
-import fileProcessor from '../../src/utils/fileProcessor.js';
+import { ICourse } from '../../../src/models/course.model.js';
+import { CourseFile } from '../../../src/models/courseFile.model.js';
+import { CourseService } from '../../../src/services/course.service';
+import fileProcessor from '../../../src/utils/fileProcessor.js';
 
 vi.mock('fs', () => ({
     default: {
@@ -11,7 +11,7 @@ vi.mock('fs', () => ({
     },
 }));
 
-vi.mock('../../src/utils/fileProcessor.js', () => {
+vi.mock('../../../src/utils/fileProcessor.js', () => {
     return {
         default: {
             writeFile: vi.fn(),
