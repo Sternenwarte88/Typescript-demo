@@ -22,13 +22,17 @@ class UserService {
     }
 
     public async getUser(id: string): Promise<IUser> {
-        const raw: string = await fileProcessor.getCompleteData(this.basePath);
-        const data = JSON.parse(raw, (key, value) =>
-            key === 'createdAt' || key === 'updatedAt'
-                ? new Date(value)
-                : value,
-        ) as UserFile;
-        const user: IUser | undefined = data.users.find(
+        const userFile: UserFile = await fileProcessor.getCompleteData(
+            this.basePath,
+        );
+
+        const users = userFile.users.map((u) => ({
+            ...u,
+            createdAt: new Date(u.createdAt),
+            updateAt: u.updateAt ? new Date(u.updateAt) : undefined,
+        }));
+
+        const user: IUser | undefined = users.find(
             (user: { id: string }) => user.id === id,
         );
 
@@ -98,4 +102,3 @@ class UserService {
 export const userService = new UserService();
 // fot Testing
 export { UserService };
-

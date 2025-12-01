@@ -59,11 +59,8 @@ describe('Get User', () => {
         const fakeUserFile: UserFile = {
             users: [fakeData],
         };
-        const parsedFakedUserFile = JSON.stringify(fakeUserFile);
 
-        mockedFileProcessor.getCompleteData.mockResolvedValue(
-            parsedFakedUserFile,
-        );
+        mockedFileProcessor.getCompleteData.mockResolvedValue(fakeUserFile);
 
         const userService = new UserService();
 
@@ -77,11 +74,8 @@ describe('Get User', () => {
         const fakeUserFile: UserFile = {
             users: [fakeData],
         };
-        const parsedFakedUserFile = JSON.stringify(fakeUserFile);
 
-        mockedFileProcessor.getCompleteData.mockResolvedValue(
-            parsedFakedUserFile,
-        );
+        mockedFileProcessor.getCompleteData.mockResolvedValue(fakeUserFile);
 
         const userService = new UserService();
         const result = await userService.getUser(fakeData.id);
@@ -89,5 +83,25 @@ describe('Get User', () => {
         expect(result.createdAt).toBeInstanceOf(Date);
         expect(typeof result.id).toBe('string');
         expect(Object.values(Role)).toContain(result.Role);
+    });
+});
+
+describe('Get Users', () => {
+    test('On successfully getting Users', async () => {
+        const fakeData = createFakeData();
+
+        mockedFileProcessor.getCompleteData.mockResolvedValue(fakeData);
+
+        const userService = new UserService();
+
+        await expect(userService.getUsers()).resolves.toEqual(fakeData);
+    });
+
+    test('On failing getting Users', async () => {
+        mockedFileProcessor.getCompleteData.mockResolvedValue(null);
+
+        const userService = new UserService();
+
+        await expect(userService.getUsers()).rejects.toThrow(`Users not found`);
     });
 });
