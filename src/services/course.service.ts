@@ -5,8 +5,9 @@ import { CourseFile } from '../models/courseFile.model.js';
 import fileProcessor from '../utils/fileProcessor.js';
 
 class CourseService {
-    private basePath: string = './courseData.json';
-    constructor() {
+    constructor(
+        private basePath: string = this.basePath ?? './courseData.json',
+    ) {
         this.initMethod();
     }
 
@@ -95,7 +96,4 @@ class CourseService {
         await fileProcessor.writeFile(courseFile, this.basePath);
     }
 }
-
-export const courseService = new CourseService();
-// For testing
 export { CourseService };

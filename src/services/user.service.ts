@@ -99,6 +99,4 @@ class UserService {
     }
 }
 
-export const userService = new UserService();
-// fot Testing
 export { UserService };

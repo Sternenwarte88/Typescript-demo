@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { v4 as uuid } from 'uuid';
 import { ICourse } from '../models/course.model.js';
-import { courseService } from '../services/course.service.js';
+import { courseService } from '../services/service.singleton.manager.js';
 
 class CourseController {
     public async getAllCourses(_req: Request, res: Response): Promise<void> {
