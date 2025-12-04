@@ -1,12 +1,9 @@
 import fs from 'fs';
-import { UserFile } from '../models/userFile.model.js';
 import { CourseFile } from '../models/courseFile.model.js';
+import { UserFile } from '../models/userFile.model.js';
 
 class FileProcessor {
-    public async writeFile(
-        data: UserFile | CourseFile | string,
-        path: string,
-    ): Promise<void> {
+    public writeFile(data: UserFile | CourseFile | string, path: string): void {
         try {
             let raw: string;
 
@@ -16,7 +13,7 @@ class FileProcessor {
                 raw = data;
             }
 
-            await fs.promises.writeFile(path, raw, 'utf8');
+            fs.writeFileSync(path, raw, 'utf8');
         } catch (error) {
             if (error instanceof Error) {
                 throw Error('Error at writing data');

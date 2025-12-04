@@ -3,7 +3,8 @@ import { afterAll, beforeEach, expect, test } from 'vitest';
 import { ICourse } from '../../src/models/course.model';
 import { CourseService } from '../../src/services/course.service';
 
-const testPath: string = './tests/testfiles/testFile.test.json';
+let counter = 0;
+let testPath: string = `./tests/testfiles/testFile_${counter}.test.json`;
 
 function makeFakeCourse(): ICourse {
     const fakeCourse: ICourse = {
@@ -23,7 +24,12 @@ beforeEach(() => {
     if (fs.existsSync(testPath)) {
         fs.unlinkSync(testPath);
     }
+
+    counter++;
+
+    testPath = `./tests/testfiles/testFile_${counter}.test.json`;
 });
+
 afterAll(() => {
     if (fs.existsSync(testPath)) {
         fs.unlinkSync(testPath);
@@ -31,8 +37,9 @@ afterAll(() => {
 });
 
 test('Test if file could be read', async () => {
-    const courseService = new CourseService(testPath);
     const fakeCourse = makeFakeCourse();
+
+    const courseService = new CourseService(testPath);
 
     await courseService.createCourse(fakeCourse);
 
@@ -62,8 +69,9 @@ test('Test if file could be deleted', async () => {
 });
 
 test('Test if file could be updated', async () => {
-    const courseService = new CourseService(testPath);
     const fakeCourse = makeFakeCourse();
+
+    const courseService = new CourseService(testPath);
 
     await courseService.createCourse(fakeCourse);
 
@@ -78,3 +86,5 @@ test('Test if file could be updated', async () => {
     expect(allCourses.courses.length).toBe(1);
     expect(allCourses.courses[0].description).toEqual(changedDescription);
 });
+
+//TODO Create Fail parts

@@ -10,14 +10,14 @@ class UserService {
         this.initMethod();
     }
 
-    private async initMethod() {
+    private initMethod() {
         const fileExists = fs.existsSync(this.basePath);
 
         if (!fileExists) {
             const initData: { users: IUser[] } = { users: [] };
             const parsedData = JSON.stringify(initData, null, 2);
 
-            await fileProcessor.writeFile(parsedData, this.basePath);
+            fileProcessor.writeFile(parsedData, this.basePath);
         }
     }
 

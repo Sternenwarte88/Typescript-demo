@@ -11,14 +11,14 @@ class CourseService {
         this.initMethod();
     }
 
-    private async initMethod() {
+    private initMethod() {
         const fileExists = fs.existsSync(this.basePath);
 
         if (!fileExists) {
             const wrapper: { courses: ICourse[] } = { courses: [] };
             const serializedWrapper = JSON.stringify(wrapper, null, 2);
 
-            await fileProcessor.writeFile(serializedWrapper, this.basePath);
+            fileProcessor.writeFile(serializedWrapper, this.basePath);
         }
     }
 
