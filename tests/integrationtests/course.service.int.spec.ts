@@ -36,7 +36,7 @@ afterAll(() => {
     }
 });
 
-test('Test if file could be read', async () => {
+test('Test if course could be created', async () => {
     const fakeCourse = makeFakeCourse();
 
     const courseService = new CourseService(testPath);
@@ -51,7 +51,7 @@ test('Test if file could be read', async () => {
     expect(getCourse.name).toBe(fakeCourse.name);
 });
 
-test('Test if file could be deleted', async () => {
+test('Test if course could be deleted', async () => {
     const courseService = new CourseService(testPath);
     const fakeCourse = makeFakeCourse();
 
@@ -66,6 +66,17 @@ test('Test if file could be deleted', async () => {
     const allCourses = await courseService.getAllCourses();
 
     expect(allCourses.courses.length).toBe(0);
+});
+
+test('Test if course couldn´t be deleted', async () => {
+    const courseService = new CourseService(testPath);
+    const fakeCourse = makeFakeCourse();
+
+    await courseService.createCourse(fakeCourse);
+
+    await expect(courseService.deleteCourse('234')).rejects.toThrowError(
+        'Index not found!',
+    );
 });
 
 test('Test if file could be updated', async () => {
@@ -85,6 +96,20 @@ test('Test if file could be updated', async () => {
 
     expect(allCourses.courses.length).toBe(1);
     expect(allCourses.courses[0].description).toEqual(changedDescription);
+});
+
+test('Test if file couldn´t be updated', async () => {
+    const fakeCourse = makeFakeCourse();
+
+    const courseService = new CourseService(testPath);
+
+    await courseService.createCourse(fakeCourse);
+
+    fakeCourse.id = 'ser';
+
+    await expect(courseService.updateCourse(fakeCourse)).rejects.toThrowError(
+        'Index not found!',
+    );
 });
 
 //TODO Create Fail parts
