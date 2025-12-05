@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { afterAll, beforeEach, expect, test } from 'vitest';
+import { afterAll, beforeEach, describe, expect, test } from 'vitest';
 import { ICourse } from '../../src/models/course.model';
 import { CourseService } from '../../src/services/course.service';
 
@@ -36,80 +36,86 @@ afterAll(() => {
     }
 });
 
-test('Test if course could be created', async () => {
-    const fakeCourse = makeFakeCourse();
+describe('Create Course', () => {
+    test('Test if course could be created', async () => {
+        const fakeCourse = makeFakeCourse();
 
-    const courseService = new CourseService(testPath);
+        const courseService = new CourseService(testPath);
 
-    await courseService.createCourse(fakeCourse);
+        await courseService.createCourse(fakeCourse);
 
-    const allCourses = await courseService.getAllCourses();
+        const allCourses = await courseService.getAllCourses();
 
-    const getCourse = await courseService.getCourse(allCourses.courses[0].id);
+        const getCourse = await courseService.getCourse(
+            allCourses.courses[0].id,
+        );
 
-    expect(getCourse).toBeDefined();
-    expect(getCourse.name).toBe(fakeCourse.name);
+        expect(getCourse).toBeDefined();
+        expect(getCourse.name).toBe(fakeCourse.name);
+    });
 });
 
-test('Test if course could be deleted', async () => {
-    const courseService = new CourseService(testPath);
-    const fakeCourse = makeFakeCourse();
+describe('Delete Course', () => {
+    test('Test if course could be deleted', async () => {
+        const courseService = new CourseService(testPath);
+        const fakeCourse = makeFakeCourse();
 
-    await courseService.createCourse(fakeCourse);
+        await courseService.createCourse(fakeCourse);
 
-    await courseService.deleteCourse(fakeCourse.id);
+        await courseService.deleteCourse(fakeCourse.id);
 
-    await expect(courseService.getCourse(fakeCourse.id)).rejects.toThrow(
-        'course is undefined',
-    );
+        await expect(courseService.getCourse(fakeCourse.id)).rejects.toThrow(
+            'course is undefined',
+        );
 
-    const allCourses = await courseService.getAllCourses();
+        const allCourses = await courseService.getAllCourses();
 
-    expect(allCourses.courses.length).toBe(0);
+        expect(allCourses.courses.length).toBe(0);
+    });
+
+    test('Test if course couldn´t be deleted', async () => {
+        const courseService = new CourseService(testPath);
+        const fakeCourse = makeFakeCourse();
+
+        await courseService.createCourse(fakeCourse);
+
+        await expect(courseService.deleteCourse('234')).rejects.toThrowError(
+            'Index not found!',
+        );
+    });
 });
 
-test('Test if course couldn´t be deleted', async () => {
-    const courseService = new CourseService(testPath);
-    const fakeCourse = makeFakeCourse();
+describe('Course Update', () => {
+    test('Test if file could be updated', async () => {
+        const fakeCourse = makeFakeCourse();
 
-    await courseService.createCourse(fakeCourse);
+        const courseService = new CourseService(testPath);
 
-    await expect(courseService.deleteCourse('234')).rejects.toThrowError(
-        'Index not found!',
-    );
+        await courseService.createCourse(fakeCourse);
+
+        const changedDescription = 'Another cool course Update';
+
+        fakeCourse.description = changedDescription;
+
+        await courseService.updateCourse(fakeCourse);
+
+        const allCourses = await courseService.getAllCourses();
+
+        expect(allCourses.courses.length).toBe(1);
+        expect(allCourses.courses[0].description).toEqual(changedDescription);
+    });
+
+    test('Test if file couldn´t be updated', async () => {
+        const fakeCourse = makeFakeCourse();
+
+        const courseService = new CourseService(testPath);
+
+        await courseService.createCourse(fakeCourse);
+
+        fakeCourse.id = 'ser';
+
+        await expect(
+            courseService.updateCourse(fakeCourse),
+        ).rejects.toThrowError('Index not found!');
+    });
 });
-
-test('Test if file could be updated', async () => {
-    const fakeCourse = makeFakeCourse();
-
-    const courseService = new CourseService(testPath);
-
-    await courseService.createCourse(fakeCourse);
-
-    const changedDescription = 'Another cool course Update';
-
-    fakeCourse.description = changedDescription;
-
-    await courseService.updateCourse(fakeCourse);
-
-    const allCourses = await courseService.getAllCourses();
-
-    expect(allCourses.courses.length).toBe(1);
-    expect(allCourses.courses[0].description).toEqual(changedDescription);
-});
-
-test('Test if file couldn´t be updated', async () => {
-    const fakeCourse = makeFakeCourse();
-
-    const courseService = new CourseService(testPath);
-
-    await courseService.createCourse(fakeCourse);
-
-    fakeCourse.id = 'ser';
-
-    await expect(courseService.updateCourse(fakeCourse)).rejects.toThrowError(
-        'Index not found!',
-    );
-});
-
-//TODO Create Fail parts
