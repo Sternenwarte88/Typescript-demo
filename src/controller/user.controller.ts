@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { v4 as uuid } from 'uuid';
 import IUser from '../models/user.model.js';
-import { userService } from '../services/user.service.js';
+import { userService } from '../services/service.singleton.manager.js';
 
 class UserController {
     /**
@@ -64,4 +64,3 @@ class UserController {
 }
 
 export default new UserController();
- 
