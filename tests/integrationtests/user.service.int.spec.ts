@@ -89,7 +89,7 @@ describe('delete User', () => {
         expect(result.users.length).toBe(0);
     });
 
-    test('failed to read user', async () => {
+    test('failed to delete user', async () => {
         const userService = new UserService(testPath);
 
         await expect(userService.deleteUser('23')).rejects.toThrowError(
