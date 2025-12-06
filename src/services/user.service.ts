@@ -1,12 +1,11 @@
 import fs from 'fs';
+import { v4 as uuid } from 'uuid';
 import IUser from '../models/user.model.js';
 import { UserFile } from '../models/userFile.model.js';
 import fileProcessor from '../utils/fileProcessor.js';
 
 class UserService {
-    private basePath = './userData.json';
-
-    constructor() {
+    constructor(private basePath: string = this.basePath ?? './userData.json') {
         this.initMethod();
     }
 
@@ -91,8 +90,16 @@ class UserService {
     public async createUser(user: IUser): Promise<void> {
         const userFile: UserFile = await this.getUsers();
         const userArray: IUser[] = userFile.users;
+        const now = new Date();
 
-        userArray.push(user);
+        const userToWrite: IUser = {
+            ...user,
+            id: uuid(),
+            createdAt: now,
+            updateAt: now,
+        };
+
+        userArray.push(userToWrite);
         userFile.users = userArray;
 
         fileProcessor.writeFile(userFile, this.basePath);

@@ -4,7 +4,7 @@ import { ICourse } from '../../src/models/course.model';
 import { CourseService } from '../../src/services/course.service';
 
 let counter = 0;
-let testPath: string = `./tests/testfiles/testFile_${counter}.test.json`;
+let testPath: string = `./tests/testfiles/testFile_course_${counter}.test.json`;
 
 function makeFakeCourse(): ICourse {
     const fakeCourse: ICourse = {
@@ -27,7 +27,7 @@ beforeEach(() => {
 
     counter++;
 
-    testPath = `./tests/testfiles/testFile_${counter}.test.json`;
+    testPath = `./tests/testfiles/testFile_course_${counter}.test.json`;
 });
 
 afterAll(() => {
