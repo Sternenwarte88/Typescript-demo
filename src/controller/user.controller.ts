@@ -1,6 +1,7 @@
+import { plainToInstance } from 'class-transformer';
+import { validateOrReject } from 'class-validator';
 import { Request, Response } from 'express';
-import { v4 as uuid } from 'uuid';
-import IUser from '../models/user.model.js';
+import User from '../models/user.model.js';
 import { userService } from '../services/service.singleton.manager.js';
 
 class UserController {
@@ -30,10 +31,21 @@ class UserController {
     }
 
     public async UpdateUser(req: Request, res: Response): Promise<void> {
-        const userData: IUser = req.body;
+        const user = plainToInstance(User, req.body);
 
-        userData.updateAt = new Date();
-        await userService.updateUser(userData);
+        try {
+            await validateOrReject(user, { whitelist: true });
+        } catch (errors) {
+            res.status(400).json({
+                message: 'Validation failed',
+                errors,
+            });
+
+            return;
+        }
+
+        user.updateAt = new Date();
+        await userService.updateUser(user);
         res.status(200).send({ msg: 'ok' });
     }
 
@@ -53,11 +65,19 @@ class UserController {
     }
 
     public async CreateUser(req: Request, res: Response): Promise<void> {
-        let user = req.body as IUser;
+        const user = plainToInstance(User, req.body);
 
-        user.id = uuid();
-        user.createdAt = new Date();
-        user.updateAt = user.createdAt;
+        try {
+            await validateOrReject(user, { whitelist: true });
+        } catch (errors) {
+            res.status(400).json({
+                message: 'Validation failed',
+                errors,
+            });
+
+            return;
+        }
+
         await userService.createUser(user);
         res.status(201).send({ msg: 'ok' });
     }

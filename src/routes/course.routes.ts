@@ -1,6 +1,5 @@
 import { Request, Response, Router } from 'express';
 import courseController from '../controller/course.controller.js';
-import { AutoBind } from '../decorators/default.decorator.js';
 
 class CourseRoutes {
     private router: Router;
@@ -18,23 +17,22 @@ class CourseRoutes {
         this.router.delete('/:id', this.deleteCourse);
     }
 
-    @AutoBind
     private getCourse(req: Request, res: Response) {
         courseController.getCourse(req, res);
     }
-    @AutoBind
+
     private getAllCourses(req: Request, res: Response) {
         courseController.getAllCourses(req, res);
     }
-    @AutoBind
+
     private createCourse(req: Request, res: Response) {
         courseController.createCourse(req, res);
     }
-    @AutoBind
+
     private updateCourse(req: Request, res: Response) {
         courseController.updateCourse(req, res);
     }
-    @AutoBind
+
     private deleteCourse(req: Request, res: Response) {
         courseController.deleteCourse(req, res);
     }

@@ -1,1 +1,1 @@
-//TODO create a sintizer class, for sanitize input on controller
+//TODO create a sanitizer class, for sanitize input on controller
