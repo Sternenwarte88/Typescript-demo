@@ -1,6 +1,8 @@
+import { plainToInstance } from 'class-transformer';
+import { validateOrReject } from 'class-validator';
 import { Request, Response } from 'express';
 import { v4 as uuid } from 'uuid';
-import { ICourse } from '../models/course.model.js';
+import { Course } from '../models/course.model.js';
 import { courseService } from '../services/service.singleton.manager.js';
 
 class CourseController {
@@ -20,7 +22,18 @@ class CourseController {
     }
 
     public async createCourse(req: Request, res: Response) {
-        let course = req.body as ICourse;
+        const course = plainToInstance(Course, req.body);
+
+        try {
+            await validateOrReject(course, { whitelist: true });
+        } catch (errors) {
+            res.status(400).json({
+                message: 'Validation failed',
+                errors,
+            });
+
+            return;
+        }
 
         course.createdAt = new Date();
         course.updateAt = course.createdAt;
@@ -39,7 +52,18 @@ class CourseController {
     }
 
     public async updateCourse(req: Request, res: Response) {
-        const course: ICourse = req.body as ICourse;
+        const course = plainToInstance(Course, req.body);
+
+        try {
+            await validateOrReject(course, { whitelist: true });
+        } catch (errors) {
+            res.status(400).json({
+                message: 'Validation failed',
+                errors,
+            });
+
+            return;
+        }
 
         const result = await courseService.updateCourse(course);
 
