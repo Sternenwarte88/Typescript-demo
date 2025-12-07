@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { v4 as uuid } from 'uuid';
-import { ICourse } from '../models/course.model.js';
+import { Course } from '../models/course.model.js';
 import { CourseFile } from '../models/courseFile.model.js';
 import fileProcessor from '../utils/fileProcessor.js';
 
@@ -15,7 +15,7 @@ class CourseService {
         const fileExists = fs.existsSync(this.basePath);
 
         if (!fileExists) {
-            const wrapper: { courses: ICourse[] } = { courses: [] };
+            const wrapper: { courses: Course[] } = { courses: [] };
             const serializedWrapper = JSON.stringify(wrapper, null, 2);
 
             fileProcessor.writeFile(serializedWrapper, this.basePath);
@@ -34,10 +34,10 @@ class CourseService {
         return data;
     }
 
-    public async getCourse(id: string): Promise<ICourse> {
+    public async getCourse(id: string): Promise<Course> {
         const data = await this.getAllCourses();
-        const courses: ICourse[] = data.courses;
-        const course: ICourse | undefined = courses.find((c) => c.id === id);
+        const courses: Course[] = data.courses;
+        const course: Course | undefined = courses.find((c) => c.id === id);
 
         if (course === undefined) {
             throw new Error('course is undefined');
@@ -46,7 +46,7 @@ class CourseService {
         return course;
     }
 
-    public async createCourse(course: ICourse): Promise<void> {
+    public async createCourse(course: Course): Promise<void> {
         const courseFile = await this.getAllCourses();
         const courses = courseFile.courses;
 
@@ -58,7 +58,7 @@ class CourseService {
         await fileProcessor.writeFile(courseFile, this.basePath);
     }
 
-    public async updateCourse(course: ICourse): Promise<CourseFile> {
+    public async updateCourse(course: Course): Promise<CourseFile> {
         const courseFile = await this.getAllCourses();
         const courses = courseFile.courses;
         const courseIndex: number = courses.findIndex(

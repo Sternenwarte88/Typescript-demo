@@ -1,0 +1,10 @@
+{
+    "entryPoints": ["src"],
+    "entryPointStrategy": "expand",
+    "tsconfig": "tsconfig.json",
+    "out": "docs",
+    "excludePrivate": false,
+    "excludeProtected": true,
+    "excludeExternals": true,
+    "excludePrivateClassFields": false
+}

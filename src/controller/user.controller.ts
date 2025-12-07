@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import User from '../models/user.model.js';
 import { userService } from '../services/service.singleton.manager.js';
 
-class UserController {
+export class UserController {
     /**
      * name
      */
@@ -82,5 +82,3 @@ class UserController {
         res.status(201).send({ msg: 'ok' });
     }
 }
-
-export default new UserController();

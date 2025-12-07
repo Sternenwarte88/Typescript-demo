@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import courseController from '../controller/course.controller.js';
+import { courseController } from '../controller/controller.singleton.manager.js';
 
 class CourseRoutes {
     private router: Router;
