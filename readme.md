@@ -1,28 +1,76 @@
-# 📘 CourseManager API – TypeScript Showcase Project
+# 📘 CourseManager API – TypeScript Showcase Backend
 
-Welcome to the **CourseManager API**, a structured backend project for managing online courses and participants — built with **Express.js** and **TypeScript**.
+The **CourseManager API** is a deliberately lightweight backend project built with **TypeScript**, **Express.js** and **Vitest**.
 
-This repository serves as a **technical showcase** to demonstrate relevant TypeScript backend skills:
+It is designed as a **technical showcase** for modern TypeScript backend development, focusing on:
 
-- Clean architecture
-- Clear separation of concerns
-- Practical TypeScript features
-- Realistic REST endpoints — **without heavy frameworks or external validators**
+- Clean, layered architecture
+- Strong typing and clear domain models
+- Declarative validation with **class-validator**
+- Automated documentation via **TypeDoc**
+- Unit testing of core business logic with **Vitest**
+
+The goal is to demonstrate **practical backend skills** without hiding anything behind heavy frameworks.
 
 ---
 
-## 🎯 Features – Demonstrated Skills
+## 🎯 Showcase Focus
 
-- 📚 **Course management** via REST API (`/courses`)
-- 👤 **User management** (`/users`)
-- 🧱 **OOP concepts** (classes, basic service logic, strong typing)
-- 🧠 **TypeScript usage**:
-    - Type aliases for data models
-    - Lightweight manual validation
-    - Separation of routing, logic, and type definitions
-- 📦 **Modular project structure**
-- 🗂️ JSON-based storage for simple persistence
-- 🧪 **Unit tests** for core logic (services, validation, and edge cases)
+This project is not meant as a full product, but as a **portfolio-ready reference**. It demonstrates:
+
+### ✅ TypeScript as a first-class citizen
+
+- Strict typing across the entire codebase
+- Separation of **types**, **models**, **services** and **controllers**
+- Use of interfaces, type aliases and enums / union types
+- Clear boundaries between layers (Controller → Service → Storage / Utils)
+
+### ✅ Request validation with class-validator
+
+- DTOs (Data Transfer Objects) for incoming requests
+- Decorator-based validation with `class-validator` / `class-transformer`
+- Consistent validation flow: **parse → validate → handle**
+- Clean separation between transport layer and business logic
+
+### ✅ Testing with Vitest
+
+- Unit tests for service-layer logic
+- Mocking of JSON-based storage and filesystem access
+- Tests for success paths and error cases
+- Fast feedback loop without starting the HTTP server
+
+### ✅ Automated documentation with TypeDoc
+
+- Documentation generated directly from TypeScript types and comments
+- Developer-focused API overview instead of manual, outdated docs
+- Published documentation:
+  - **GitHub Pages:** https://sternenwarte88.github.io/Typescript-demo/
+
+### ✅ Conscious use of external libraries
+
+- **Express.js** – minimal HTTP layer and routing
+- **class-validator / class-transformer** – declarative validation for DTOs
+- **uuid** – ID generation for entities
+- **TypeDoc** – documentation generation
+- **Vitest** – modern test runner for TypeScript
+
+Each dependency is chosen to highlight specific **backend skills** instead of adding unnecessary complexity.
+
+---
+
+## 🔧 Planned Improvements
+
+These parts are explicitly planned as next steps and tracked in the repository roadmap:
+
+### 🔜 Unified error handling layer
+
+A dedicated error handling concept will be added, including:
+
+- Custom error classes (e.g. `NotFoundError`, `ValidationError`)
+- Centralized Express error middleware
+- Consistent JSON error responses with status codes
+
+Goal: mimic production-grade error behaviour while staying lightweight.
 
 ---
 
@@ -30,9 +78,9 @@ This repository serves as a **technical showcase** to demonstrate relevant TypeS
 
 ### Requirements
 
-- Node.js 18+
-- npm or yarn
-- Git
+- **Node.js** 18+
+- **npm** (or yarn / pnpm)
+- **Git**
 
 ### Installation
 
@@ -44,14 +92,37 @@ npm install
 
 ### Scripts
 
-| Command         | Description                                    |
-| --------------- | ---------------------------------------------- |
-| `npm run dev`   | Start development mode using `ts-node-dev`     |
-| `npm run build` | Transpile TypeScript into `/dist`              |
-| `npm start`     | Run the production server from `dist/index.js` |
-| `npm test`      | Run the unit test suite                        |
+The project exposes the following npm scripts:
 
-```bash
+```json
+{
+  "start": "node ./dist/index.js",
+  "build": "tsc",
+  "develop": "tsc --watch",
+  "test": "vitest run --coverage",
+  "doc": "npx typedoc src --plugin typedoc-github-theme"
+}
+```
+
+Examples:
+
+```
+npm run develop
+npm run build
+npm start
+npm test
+npm run doc
+```
+```
+
+----------------- | ------------------------------------------------ |
+| `npm run dev`   | Start development server with ts-node-dev        |
+| `npm run build` | Compile TypeScript to JavaScript into `dist/`    |
+| `npm start`     | Run the compiled production build from `dist/`   |
+| `npm test`      | Run the Vitest unit test suite                   |
+
+Examples:
+
 npm run dev
 npm run build
 npm start
@@ -62,19 +133,21 @@ npm test
 
 ## 🔁 Example Requests (curl/Postman)
 
-### Create User
+### Create a user
 
 ```bash
 curl -X POST http://localhost:3000/users \
   -H "Content-Type: application/json" \
-  -d '{"name": "Anna", "email": "anna@example.com", "role": "User"}'
+  -d '{
+    "name": "Anna",
+    "email": "anna@example.com",
+    "role": "User"
+  }'
 ```
 
-Allowed roles: `Admin`, `User`, `Guest`.
+Allowed roles (example): `Admin`, `User`, `Guest`.
 
----
-
-### Create Course
+### Create a course
 
 ```bash
 curl -X POST http://localhost:3000/courses \
@@ -88,57 +161,70 @@ curl -X POST http://localhost:3000/courses \
   }'
 ```
 
+Basic rules (example):
+
 - `price` must be a number
 - `tags` must be an array of strings
 
 ---
 
-## 🧱 Project Structure
 
-```plaintext
-src/
-├── controllers/      # REST request handlers
-├── models/           # Data models (User, Course)
-├── routes/           # Express routers
-├── services/         # Business logic
-├── types/            # Type definitions
-├── utils/            # Helper functions (e.g. ID generator)
-└── index.ts          # Application entry point
+
+---
+
+## 🧪 Testing
+
+The project uses **Vitest** for fast, TypeScript-friendly testing.
+
+Typical patterns in the test suite:
+
+- Service-level tests without starting the HTTP server
+- Mocks for the file-based storage layer
+- Assertions for both valid and invalid input
+
+Run tests with:
+
+```bash
+npm test
 ```
 
 ---
 
-## ⚙️ Technologies & Concepts
+## 📚 Documentation
 
-| Topic                  | Implementation                                     |
-| ---------------------- | -------------------------------------------------- |
-| **TypeScript**         | Type aliases, strong typing, modular structure     |
-| **Express.js**         | Routing & REST endpoints                           |
-| **Manual validation**  | Basic checks without external validation libraries |
-| **Modularization**     | Separation of logic, routes, and type definitions  |
-| **File-based storage** | JSON files as a simple database alternative        |
-| **Unit testing**       | Automated tests for core business logic            |
+Documentation is generated automatically using **TypeDoc**.
 
----
+Generate docs locally:
 
-## 💼 Purpose & Showcase Value
+```bash
+npm run doc
+npm run docs
+```
 
-The CourseManager API was developed as a personal project to demonstrate **practical TypeScript skills in backend development**.
+The generated HTML documentation is available in the `docs/` folder and is also published via GitHub Pages:
 
-Goals of this project:
-
-- Provide realistic, easy-to-understand REST endpoints
-- Showcase clean, maintainable architecture patterns
-- Use TypeScript in a transparent, beginner-friendly way
-- Avoid framework complexity to focus on fundamentals
-- Demonstrate basic **unit testing** and test-driven thinking
-
-This repository can be used as a **portfolio project in job applications**.
+- **Online docs:** https://sternenwarte88.github.io/Typescript-demo/
 
 ---
 
-## 👤 Contact
+## 💼 Purpose & Context
 
-Project & implementation: **[Stephan aka Sternenwarte88](https://github.com/Sternenwarte88)**
+The **CourseManager API** was created as a **showcase project** for backend-focused TypeScript roles. It demonstrates:
 
-Feedback or questions? Feel free to open an issue or reach out via GitHub.
+- Clean, maintainable code structure
+- Type-safe API design with DTOs and validation
+- Practical testing skills with Vitest
+- Automated documentation workflows
+- Conscious use of libraries instead of framework magic
+
+It is ideal as a portfolio reference in job applications or technical discussions.
+
+---
+
+## 👤 Author
+
+Project & implementation: **Stephan aka Sternenwarte88**  
+GitHub: https://github.com/Sternenwarte88
+
+Feedback, ideas or suggestions? Feel free to open an issue or start a discussion in the repository.
+
