@@ -3,6 +3,9 @@ import { v4 as uuid } from 'uuid';
 import { Role } from '../types/role.js';
 import { IBaseModel } from './base.model.js';
 
+/**
+ * This class shapes the model for user and implements the IBaseModel
+ */
 export class User implements IBaseModel {
     @IsString()
     id: string = uuid();

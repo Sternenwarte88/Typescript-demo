@@ -1,6 +1,9 @@
 import { IsDate, IsNumber, IsString } from 'class-validator';
 import { IBaseModel } from './base.model.js';
 
+/**
+ * Course model with integrated class-validator
+ */
 export class Course implements IBaseModel {
     @IsString()
     id: string;
