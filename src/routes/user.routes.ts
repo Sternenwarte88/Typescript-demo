@@ -9,6 +9,9 @@ class UserRouter {
         this.initRoutes();
     }
 
+    /**
+     * Method for initializing te routes
+     */
     private initRoutes(): void {
         this.router.get('/:id', this.getUser);
         this.router.get('/', this.getAllUsers);

@@ -9,6 +9,9 @@ class CourseRoutes {
         this.initRoutes();
     }
 
+    /**
+     * Method for initializing te routes
+     */
     private initRoutes() {
         this.router.get('/:id', this.getCourse);
         this.router.get('/', this.getAllCourses);
@@ -41,5 +44,7 @@ class CourseRoutes {
         return this.router;
     }
 }
-
+/**
+ * Exported CourseRoutes which handles the incoming requests
+ */
 export default new CourseRoutes().getRouter();

@@ -11,7 +11,7 @@
         "build": "tsc",
         "develop": "tsc --watch",
         "test": "vitest run --coverage",
-        "doc": "typedoc"
+        "doc": "npx typedoc src --plugin typedoc-github-theme"
     },
     "dependencies": {
         "class-transformer": "^0.5.1",
@@ -31,6 +31,7 @@
         "eslint-config-prettier": "^10.1.5",
         "prettier": "^3.7.3",
         "typedoc": "^0.28.15",
+        "typedoc-github-theme": "^0.3.1",
         "typescript": "^5.8.3",
         "vitest": "^4.0.14"
     }
