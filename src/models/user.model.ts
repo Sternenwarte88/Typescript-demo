@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+import { Type } from 'class-transformer';
 import { IsDate, IsEmail, IsEnum, IsString } from 'class-validator';
 import { v4 as uuid } from 'uuid';
 import { Role } from '../types/role.js';
@@ -12,7 +14,9 @@ export class User implements IBaseModel {
     @IsString()
     name: string;
     @IsDate()
+    @Type(() => Date)
     createdAt: Date;
+    @Type(() => Date)
     @IsDate()
     updateAt?: Date | undefined;
     @IsEmail()

@@ -1,6 +1,6 @@
 import express from 'express';
-import userRouter from './routes/user.routes.js';
 import courseRoutes from './routes/course.routes.js';
+import userRouter from './routes/user.routes.js';
 
 const app = express();
 
@@ -13,3 +13,5 @@ app.use('/course', courseRoutes);
 app.listen(Port, () => {
     console.log(`Server is running on port ${Port}`);
 });
+
+// TODO Create Errorhandling middleware

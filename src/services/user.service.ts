@@ -1,13 +1,9 @@
+import { plainToInstance } from 'class-transformer';
 import fs from 'fs';
 import { v4 as uuid } from 'uuid';
-import IUser from '../models/user.model.js';
+import IUser, { User } from '../models/user.model.js';
 import { UserFile } from '../models/userFile.model.js';
 import { fileProcessor } from '../utils/utils.singleton.manager.js';
-
-//TODO Rework this code
-// TODO Create Error handling
-// TODO make getUser easier to read
-// TODO decouple updateUser from getUser and make it easier to read
 
 export class UserService {
     /**
@@ -39,24 +35,20 @@ export class UserService {
      * @returns The user.
      * @throws Throws an Error if the user coulnd´t be found
      */
-    public async getUser(id: string): Promise<IUser> {
+    public async getUser(id: string): Promise<User> {
         const userFile: UserFile = await fileProcessor.getCompleteData(
             this.basePath,
         );
 
-        const users = userFile.users.map((u) => ({
-            ...u,
-            createdAt: new Date(u.createdAt),
-            updateAt: u.updateAt ? new Date(u.updateAt) : undefined,
-        }));
-
-        const user: IUser | undefined = users.find(
+        const rawUser: User | undefined = userFile.users.find(
             (user: { id: string }) => user.id === id,
         );
 
-        if (!user) {
+        if (!rawUser) {
             throw new Error(`User with id ${id} not found`);
         }
+
+        const user = plainToInstance(User, rawUser);
 
         return user;
     }
@@ -92,11 +84,11 @@ export class UserService {
             throw new Error('User not found');
         }
 
-        userArray[index].name = userData.name;
-        userArray[index].Role = userData.Role;
-        userArray[index].email = userData.email;
-        userArray[index].updateAt = new Date();
-        userFile.users = userArray;
+        userFile.users[index] = {
+            ...userFile.users[index],
+            ...userData,
+            updateAt: new Date(),
+        };
 
         fileProcessor.writeFile(userFile, this.basePath);
     }
@@ -126,7 +118,9 @@ export class UserService {
      * @param user The data from the new user which should be created
      */
     public async createUser(user: IUser): Promise<void> {
-        const userFile: UserFile = await this.getUsers();
+        const userFile: UserFile = await fileProcessor.getCompleteData(
+            this.basePath,
+        );
         const userArray: IUser[] = userFile.users;
         const now = new Date();
 

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import IUser from '../../../src/models/user.model';
+import User from '../../../src/models/user.model';
 import { UserFile } from '../../../src/models/userFile.model';
 import { UserService } from '../../../src/services/user.service';
 import { Role } from '../../../src/types/role';
@@ -27,7 +27,7 @@ beforeEach(() => {
     mockedFS.existsSync.mockReturnValue(true);
 });
 
-function createFakeData(): IUser {
+function createFakeData(): User {
     return {
         createdAt: new Date(),
         email: 'test@test.de',
@@ -120,7 +120,7 @@ describe('Update User', () => {
 
         const userService = new UserService();
 
-        const wrongUser: IUser = { ...fakeData };
+        const wrongUser: User = { ...fakeData };
 
         wrongUser.id = '234';
 
@@ -139,7 +139,7 @@ describe('Update User', () => {
 
         const userService = new UserService();
 
-        const newUser: IUser = { ...fakeData };
+        const newUser: User = { ...fakeData };
 
         newUser.email = 'test@test2.de';
         await userService.updateUser(newUser);
@@ -192,7 +192,7 @@ describe('Creating user', () => {
 
         mockedFileProcessor.getCompleteData.mockResolvedValue(fakeUserData);
 
-        const newFakeData: IUser = {
+        const newFakeData: User = {
             id: '',
             name: 'fakeUser2',
             createdAt: new Date(),
