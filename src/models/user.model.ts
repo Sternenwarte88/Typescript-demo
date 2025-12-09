@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { Type } from 'class-transformer';
 import { IsDate, IsEmail, IsEnum, IsString } from 'class-validator';
 import { v4 as uuid } from 'uuid';

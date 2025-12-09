@@ -1,4 +1,5 @@
 import express from 'express';
+import 'reflect-metadata';
 import courseRoutes from './routes/course.routes.js';
 import userRouter from './routes/user.routes.js';
 
