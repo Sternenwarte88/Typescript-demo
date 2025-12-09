@@ -2,7 +2,7 @@ import fs from 'fs';
 import { v4 as uuid } from 'uuid';
 import { Course } from '../models/course.model.js';
 import { CourseFile } from '../models/courseFile.model.js';
-import fileProcessor from '../utils/fileProcessor.js';
+import { fileProcessor } from '../utils/utils.singleton.manager.js';
 
 export class CourseService {
     /**
