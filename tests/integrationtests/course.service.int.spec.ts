@@ -1,13 +1,13 @@
 import fs from 'fs';
 import { afterAll, beforeEach, describe, expect, test } from 'vitest';
-import { ICourse } from '../../src/models/course.model';
+import { Course } from '../../src/models/course.model';
 import { CourseService } from '../../src/services/course.service';
 
 let counter = 0;
 let testPath: string = `./tests/testfiles/testFile_course_${counter}.test.json`;
 
-function makeFakeCourse(): ICourse {
-    const fakeCourse: ICourse = {
+function makeFakeCourse(): Course {
+    const fakeCourse: Course = {
         author: 'Stephan',
         createdAt: new Date(),
         description: 'blablabala',

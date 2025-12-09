@@ -4,7 +4,7 @@ import IUser from '../../../src/models/user.model';
 import { UserFile } from '../../../src/models/userFile.model';
 import { UserService } from '../../../src/services/user.service';
 import { Role } from '../../../src/types/role';
-import fileProcessor from '../../../src/utils/fileProcessor';
+import { fileProcessor } from '../../../src/utils/utils.singleton.manager';
 
 vi.mock('fs', () => ({
     default: {
@@ -12,8 +12,8 @@ vi.mock('fs', () => ({
     },
 }));
 
-vi.mock('../../../src/utils/fileProcessor', () => ({
-    default: {
+vi.mock('../../../src/utils/utils.singleton.manager', () => ({
+    fileProcessor: {
         writeFile: vi.fn(),
         getCompleteData: vi.fn(),
     },
