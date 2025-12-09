@@ -2,7 +2,7 @@ import fs from 'fs';
 import { v4 as uuid } from 'uuid';
 import IUser from '../models/user.model.js';
 import { UserFile } from '../models/userFile.model.js';
-import fileProcessor from '../utils/fileProcessor.js';
+import { fileProcessor } from '../utils/utils.singleton.manager.js';
 
 //TODO Rework this code
 // TODO Create Error handling

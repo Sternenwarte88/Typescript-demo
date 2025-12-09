@@ -9,7 +9,7 @@
     "scripts": {
         "start": "node ./dist/index.js",
         "build": "tsc",
-        "develop": "tsc --watch",
+        "dev": "tsc --watch",
         "test": "vitest run --coverage",
         "doc": "npx typedoc src --plugin typedoc-github-theme"
     },
@@ -17,9 +17,7 @@
         "class-transformer": "^0.5.1",
         "class-validator": "^0.14.3",
         "express": "^5.1.0",
-        "reflect-metadata": "^0.2.2",
-        "uuid": "^11.1.0",
-        "zod": "^3.25.32"
+        "uuid": "^11.1.0"
     },
     "devDependencies": {
         "@types/express": "^4.17.21",
