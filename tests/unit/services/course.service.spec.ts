@@ -188,7 +188,7 @@ describe('Update Course', () => {
 
         await expect(
             courseService.updateCourse(wrongCourse),
-        ).rejects.toThrowError('Index not found!');
+        ).rejects.toThrowError('Course not found!');
     });
 
     test('Updateing course with correct data.', async () => {
@@ -222,7 +222,7 @@ describe('Delete Course', () => {
         const courseService = new CourseService();
 
         await expect(courseService.deleteCourse('223')).rejects.toThrowError(
-            'Index not found!',
+            'Course not found!',
         );
     });
 

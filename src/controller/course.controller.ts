@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { v4 as uuid } from 'uuid';
 import { Course } from '../models/course.model.js';
 import { courseService } from '../services/service.singleton.manager.js';
+import { ValidationError } from '../utils/error/validationError.js';
 
 /**
  * This controller takes the data, validate them and passes the object to the service
@@ -48,12 +49,7 @@ export class CourseController {
         try {
             await validateOrReject(course, { whitelist: true });
         } catch (errors) {
-            res.status(400).json({
-                message: 'Validation failed',
-                errors,
-            });
-
-            return;
+            throw new ValidationError('Validation failed', errors);
         }
 
         course.createdAt = new Date();
@@ -89,12 +85,7 @@ export class CourseController {
         try {
             await validateOrReject(course, { whitelist: true });
         } catch (errors) {
-            res.status(400).json({
-                message: 'Validation failed',
-                errors,
-            });
-
-            return;
+            throw new ValidationError('Validation failed', errors);
         }
 
         const result = await courseService.updateCourse(course);

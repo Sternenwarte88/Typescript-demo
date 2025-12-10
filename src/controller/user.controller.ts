@@ -3,6 +3,7 @@ import { validateOrReject } from 'class-validator';
 import { Request, Response } from 'express';
 import User from '../models/user.model.js';
 import { userService } from '../services/service.singleton.manager.js';
+import { ValidationError } from '../utils/error/validationError.js';
 
 export class UserController {
     /**
@@ -15,11 +16,9 @@ export class UserController {
         const id = req.query.id;
 
         if (typeof id !== 'string') {
-            res.status(400).json({
-                error: 'Query parameter "id" is required and must be a string',
-            });
-
-            return;
+            throw new ValidationError(
+                'Query parameter "id" is required and must be a string',
+            );
         }
 
         let user = await userService.getUser(id);
@@ -50,12 +49,7 @@ export class UserController {
         try {
             await validateOrReject(user, { whitelist: true });
         } catch (errors) {
-            res.status(400).json({
-                message: 'Validation failed',
-                errors,
-            });
-
-            return;
+            throw new ValidationError('Validation failed', errors);
         }
 
         user.updateAt = new Date();
@@ -73,11 +67,9 @@ export class UserController {
         const id = req.query.id;
 
         if (typeof id !== 'string') {
-            res.status(400).json({
-                error: 'Query parameter "id" is required and must be a string',
-            });
-
-            return;
+            throw new ValidationError(
+                'Query parameter "id" is required and must be a string',
+            );
         }
 
         await userService.deleteUser(id);
@@ -96,12 +88,8 @@ export class UserController {
         try {
             await validateOrReject(user, { whitelist: true });
         } catch (errors) {
-            res.status(400).json({
-                message: 'Validation failed',
-                errors,
-            });
-
-            return;
+            throw new ValidationError('Validation failed', errors);
+           
         }
 
         await userService.createUser(user);

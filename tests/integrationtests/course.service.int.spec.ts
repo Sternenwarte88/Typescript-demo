@@ -62,9 +62,12 @@ describe('Delete Course', () => {
 
         await courseService.createCourse(fakeCourse);
 
-        await courseService.deleteCourse(fakeCourse.id);
+        const savedCourse = await courseService.getAllCourses();
+        const course = savedCourse.courses[0];
 
-        await expect(courseService.getCourse(fakeCourse.id)).rejects.toThrow(
+        await courseService.deleteCourse(course.id);
+
+        await expect(courseService.getCourse(course.id)).rejects.toThrow(
             'course is undefined',
         );
 
@@ -80,7 +83,7 @@ describe('Delete Course', () => {
         await courseService.createCourse(fakeCourse);
 
         await expect(courseService.deleteCourse('234')).rejects.toThrowError(
-            'Index not found!',
+            'Course not found!',
         );
     });
 });
@@ -93,11 +96,14 @@ describe('Course Update', () => {
 
         await courseService.createCourse(fakeCourse);
 
+        const savedCourse = await courseService.getAllCourses();
+        const course = savedCourse.courses[0];
+
         const changedDescription = 'Another cool course Update';
 
-        fakeCourse.description = changedDescription;
+        course.description = changedDescription;
 
-        await courseService.updateCourse(fakeCourse);
+        await courseService.updateCourse(course);
 
         const allCourses = await courseService.getAllCourses();
 
@@ -116,6 +122,6 @@ describe('Course Update', () => {
 
         await expect(
             courseService.updateCourse(fakeCourse),
-        ).rejects.toThrowError('Index not found!');
+        ).rejects.toThrowError('Course not found!');
     });
 });

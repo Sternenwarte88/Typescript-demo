@@ -2,6 +2,7 @@ import fs from 'fs';
 import { v4 as uuid } from 'uuid';
 import { Course } from '../models/course.model.js';
 import { CourseFile } from '../models/courseFile.model.js';
+import { NotFoundError } from '../utils/error/notFound.error.js';
 import { fileProcessor } from '../utils/utils.singleton.manager.js';
 
 export class CourseService {
@@ -39,7 +40,7 @@ export class CourseService {
         );
 
         if (!data) {
-            throw new Error(`Course not found`);
+            throw new NotFoundError('Course not found');
         }
 
         return data;
@@ -57,7 +58,7 @@ export class CourseService {
         const course: Course | undefined = courses.find((c) => c.id === id);
 
         if (course === undefined) {
-            throw new Error('course is undefined');
+            throw new NotFoundError('course is undefined');
         }
 
         return course;
@@ -71,10 +72,15 @@ export class CourseService {
         const courseFile = await this.getAllCourses();
         const courses = courseFile.courses;
 
-        course.id = uuid();
-        course.createdAt = new Date();
-        course.updateAt = course.createdAt;
-        courses.push(course);
+        const creationDate = new Date();
+        const newCourse: Course = {
+            ...course,
+            id: uuid(),
+            createdAt: creationDate,
+            updateAt: creationDate,
+        };
+
+        courses.push(newCourse);
         courseFile.courses = courses;
         fileProcessor.writeFile(courseFile, this.basePath);
     }
@@ -92,15 +98,18 @@ export class CourseService {
         );
 
         if (courseIndex === -1) {
-            throw new Error('Index not found!');
+            throw new NotFoundError('Course not found!');
         }
 
-        courses[courseIndex].author = course.author;
-        courses[courseIndex].description = course.description;
-        courses[courseIndex].name = course.name;
-        courses[courseIndex].price = course.price;
-        courses[courseIndex].tags = course.tags;
-        courses[courseIndex].updateAt = new Date();
+        const updatedCourse: Course = {
+            ...courses[courseIndex],
+            ...course,
+            id: course.id,
+            createdAt: courses[courseIndex].createdAt,
+            updateAt: new Date(),
+        };
+
+        courses[courseIndex] = updatedCourse;
 
         courseFile.courses = courses;
 
@@ -120,7 +129,7 @@ export class CourseService {
         const courseIndex: number = courses.findIndex((c) => c.id === id);
 
         if (courseIndex === -1) {
-            throw new Error('Index not found!');
+            throw new NotFoundError('Course not found!');
         }
 
         courses.splice(courseIndex, 1);
