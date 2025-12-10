@@ -41,7 +41,8 @@ export class CourseController {
      * It´s for creating a new course
      * @param req In that request is the date for the course
      * @param res The response for creating a new course
-     * @returns Eather it breaks out of the validation or it returns nothing
+     * @returns  nothing
+     * @throws Validationerror if the validation failed
      */
     public async createCourse(req: Request, res: Response): Promise<void> {
         const course = plainToInstance(Course, req.body);
@@ -77,7 +78,8 @@ export class CourseController {
      *  This method extracts data from the body and provide it to the service for updating the course
      * @param req is filled with data from Course classe
      * @param res the response of updating the course
-     * @returns an error and breaks out or returns nothing
+     * @returns  nothing
+     * @throws Validationerror if the validation failed
      */
     public async updateCourse(req: Request, res: Response): Promise<void> {
         const course = plainToInstance(Course, req.body);

@@ -89,6 +89,7 @@ export class CourseService {
      * This method tries to update the specific course in the file
      * @param course The Course Data to update
      * @returns returns the new courseFile
+     * @throws NotFoundError if the Course could not be found
      */
     public async updateCourse(course: Course): Promise<CourseFile> {
         const courseFile = await this.getAllCourses();

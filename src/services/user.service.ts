@@ -3,6 +3,7 @@ import fs from 'fs';
 import { v4 as uuid } from 'uuid';
 import IUser, { User } from '../models/user.model.js';
 import { UserFile } from '../models/userFile.model.js';
+import { NotFoundError } from '../utils/error/notFound.error.js';
 import { fileProcessor } from '../utils/utils.singleton.manager.js';
 
 export class UserService {
@@ -45,7 +46,7 @@ export class UserService {
         );
 
         if (!rawUser) {
-            throw new Error(`User with id ${id} not found`);
+            throw new NotFoundError(`User with id ${id} not found`);
         }
 
         const user = plainToInstance(User, rawUser);
@@ -64,7 +65,7 @@ export class UserService {
         );
 
         if (!data) {
-            throw new Error(`Users not found`);
+            throw new NotFoundError(`Users not found`);
         }
 
         return data;
@@ -81,7 +82,7 @@ export class UserService {
         const index: number = userArray.findIndex((i) => i.id == userData.id);
 
         if (index === -1) {
-            throw new Error('User not found');
+            throw new NotFoundError('User not found');
         }
 
         userFile.users[index] = {
@@ -104,7 +105,7 @@ export class UserService {
         const index: number = userArray.findIndex((i) => i.id === id);
 
         if (index === -1) {
-            throw new Error('Index not found!');
+            throw new NotFoundError('User not found!');
         }
 
         userArray.splice(index, 1);

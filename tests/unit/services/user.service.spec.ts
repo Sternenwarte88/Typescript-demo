@@ -166,7 +166,7 @@ describe('Delete User', () => {
         const userService = new UserService();
 
         await expect(userService.deleteUser('223')).rejects.toThrowError(
-            'Index not found!',
+            'User not found!',
         );
     });
 
