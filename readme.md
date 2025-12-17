@@ -14,6 +14,39 @@ The goal is to demonstrate **practical backend skills** without hiding anything 
 
 ---
 
+## 💼 Purpose & Context
+
+The **CourseManager API** was created as a **showcase project** for backend-focused TypeScript roles. It demonstrates:
+
+- Clean, maintainable code structure
+- Type-safe API design with DTOs and validation
+- Practical testing skills with Vitest
+- Automated documentation workflows
+- Production-grade error handling
+- Conscious use of libraries instead of framework magic
+
+It is ideal as a portfolio reference in job applications or technical discussions.
+
+---
+
+## 🎯 Architectural Decisions
+
+This project intentionally uses **file-based storage** instead of a database to keep the focus on:
+
+- TypeScript fundamentals and type safety
+- Clean code architecture and separation of concerns
+- Testing patterns (unit + integration)
+- Error handling strategies
+- Documentation practices
+
+**For projects demonstrating database integration, authentication, and infrastructure**, see:
+- [Unwritten-Legends-Backend](https://github.com/Sternenwarte88/Unwritten-Legends-Backend) – Redis, MongoDB, JWT Auth, Microservices
+- [nest-challenge-solo](https://github.com/Sternenwarte88/nest-challenge-solo) – NestJS Framework Patterns
+
+This separation allows each project to focus on specific backend skills without unnecessary complexity.
+
+---
+
 ## 🎯 Showcase Focus
 
 This project is not meant as a full product, but as a **portfolio-ready reference**. It demonstrates:
@@ -236,6 +269,24 @@ npm run doc
 The generated HTML documentation is available in the `docs/` folder and is also published via GitHub Pages:
 
 - **Online docs:** https://sternenwarte88.github.io/Typescript-demo/
+
+---
+
+## 🎯 Architectural Decisions
+
+This project intentionally uses **file-based storage** instead of a database to keep the focus on:
+
+- TypeScript fundamentals and type safety
+- Clean code architecture and separation of concerns
+- Testing patterns (unit + integration)
+- Error handling strategies
+- Documentation practices
+
+**For projects demonstrating database integration, authentication, and infrastructure**, see:
+- [Unwritten-Legends-Backend](https://github.com/Sternenwarte88/Unwritten-Legends-Backend) – Redis, MongoDB, JWT Auth, Microservices
+- [nest-challenge-solo](https://github.com/Sternenwarte88/nest-challenge-solo) – NestJS Framework Patterns
+
+This separation allows each project to focus on specific backend skills without unnecessary complexity.
 
 ---
 
