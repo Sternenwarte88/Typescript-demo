@@ -58,19 +58,71 @@ Each dependency is chosen to highlight specific **backend skills** instead of ad
 
 ---
 
-## 🔧 Planned Improvements
+## ✅ Error Handling Architecture
 
-These parts are explicitly planned as next steps and tracked in the repository roadmap:
+The project implements a **production-grade error handling system** with custom error classes and centralized middleware.
 
-### 🔜 Unified error handling layer
+### Custom Error Classes
 
-A dedicated error handling concept will be added, including:
+Located in `src/utils/error/`:
 
-- Custom error classes (e.g. `NotFoundError`, `ValidationError`)
-- Centralized Express error middleware
-- Consistent JSON error responses with status codes
+**Base Class - AppError**
+```typescript
+export class AppError extends Error {
+  public status: number;
+  public details?: unknown;
+  
+  constructor(message: string, status = 500, details?: unknown) {
+    super(message);
+    this.status = status;
+    this.details = details;
+  }
+}
+```
 
-Goal: mimic production-grade error behaviour while staying lightweight.
+**Specialized Errors**
+- **NotFoundError** – Returns 404 with custom message
+- **ValidationError** – Returns 400 with validation error details from class-validator
+
+### Centralized Error Middleware
+
+Express error handler in `src/utils/error/errorhandler.ts`:
+
+```typescript
+export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  if (err instanceof AppError) {
+    return res.status(err.status).json({
+      error: err.message,
+      status: err.status,
+      details: err.details ?? null,
+    });
+  }
+  
+  return res.status(500).json({
+    error: 'Internal Server Error',
+  });
+};
+```
+
+Registered in `index.ts`:
+```typescript
+app.use(errorHandler);
+```
+
+### Usage Example
+
+Controllers throw typed errors that are automatically handled:
+
+```typescript
+// Example from course.controller.ts
+try {
+  await validateOrReject(course, { whitelist: true });
+} catch (errors) {
+  throw new ValidationError('Validation failed', errors);
+}
+```
+
+The middleware catches these errors and returns consistent JSON responses with appropriate HTTP status codes.
 
 ---
 
@@ -106,27 +158,12 @@ The project exposes the following npm scripts:
 
 Examples:
 
-```
+```bash
 npm run develop
 npm run build
 npm start
 npm test
 npm run doc
-```
-```
-
------------------ | ------------------------------------------------ |
-| `npm run dev`   | Start development server with ts-node-dev        |
-| `npm run build` | Compile TypeScript to JavaScript into `dist/`    |
-| `npm start`     | Run the compiled production build from `dist/`   |
-| `npm test`      | Run the Vitest unit test suite                   |
-
-Examples:
-
-npm run dev
-npm run build
-npm start
-npm test
 ```
 
 ---
@@ -168,10 +205,6 @@ Basic rules (example):
 
 ---
 
-
-
----
-
 ## 🧪 Testing
 
 The project uses **Vitest** for fast, TypeScript-friendly testing.
@@ -198,7 +231,6 @@ Generate docs locally:
 
 ```bash
 npm run doc
-npm run docs
 ```
 
 The generated HTML documentation is available in the `docs/` folder and is also published via GitHub Pages:
@@ -215,6 +247,7 @@ The **CourseManager API** was created as a **showcase project** for backend-focu
 - Type-safe API design with DTOs and validation
 - Practical testing skills with Vitest
 - Automated documentation workflows
+- Production-grade error handling
 - Conscious use of libraries instead of framework magic
 
 It is ideal as a portfolio reference in job applications or technical discussions.
@@ -227,4 +260,3 @@ Project & implementation: **Stephan aka Sternenwarte88**
 GitHub: https://github.com/Sternenwarte88
 
 Feedback, ideas or suggestions? Feel free to open an issue or start a discussion in the repository.
-
